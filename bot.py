@@ -154,6 +154,7 @@ def addNAPAlliance(tag, fullName):
     saveNAPFile()
 
 def removeNAPAlliance(tag):
+    global NAPAlliances
     validateNAPAlliancesLoaded()
     if tag in NAPAlliances:
         return NAPAlliances.pop(tag, None)
@@ -163,6 +164,23 @@ def getNAPAllianceList():
     validateNAPAlliancesLoaded()
     global NAPAlliances
     return NAPAlliances
+
+def setNAPAttribute(allianceTag, attribute, value):
+    global NAPAlliances
+    validateNAPAlliancesLoaded()
+    if allianceTag in NAPAlliances:
+        NAPAlliances[allianceTag][attribute] = value
+        saveNAPFile()
+        return True
+    return False
+
+def getNAPAllianceDetails(allianceTag):
+    validateNAPAlliancesLoaded()
+    global NAPAlliances
+    if allianceTag in NAPAlliances:
+        return NAPAlliances[allianceTag]
+    return None
+
 
 #untested
 async def sendDevMessage(message):
@@ -314,6 +332,77 @@ class NAP(commands.Cog):
             await context.send(message)
             await announceToGuilds(message)
             addAuditLog(f"(Nick: {context.author.display_name} Name: {context.author.name}) removed alliance {tag} {name} from NAP list")
+
+    @commands.command(name="setAllianceMarshal", help="Sets the name of the alliance's marshal, usage: !setAllianceMarshal <alliance tag> <marshal name>")
+    async def setAllianceMarshal(self, context):
+        if not await validateNAPServer(context, "setAllianceMarshal"):
+            return
+        contents = context.message.content.replace("!setAllianceMarshal ", "")
+        contents = contents.split(" ")
+        if len(contents) != 2:
+            await context.send("Incorrect usage of !setAllianceMarshal, usage: !setAllianceMarshal <alliance tag> <marshal name>.\nDoes your marshal's name have a space in it? That is unsupported")
+            return
+        tag = contents[0]
+        name = contents[1]
+        success = setNAPAttribute(tag, "marshal", name)
+        if not success:
+            await context.send("Alliance is not registered in the NAP, please register with !addAlliance")
+            return
+        await context.send(f"{tag} Alliance marshal has been set to {name}")
+        addAuditLog(f"(Nick: {context.author.display_name} Name: {context.author.name}) set alliance {tag} marshal name to {name}")
+
+
+    @commands.command(name="setAllianceCoords", help="Sets the coordinates of the alliance, usage: !setAllianceCoords <alliance tag> <x,y>")
+    async def setAllianceCoords(self, context):
+        if not await validateNAPServer(context, "setAllianceCoords"):
+            return
+        contents = context.message.content.replace("!setAllianceCoords ", "")
+        contents = contents.split(" ")
+        if len(contents) != 2:
+            await context.send("Incorrect usage of !setAllianceCoords, usage: !setAllianceMarshal <alliance tag> <x,y>.\n")
+            return
+        tag = contents[0]
+        coords = contents[1]
+        success = setNAPAttribute(tag, "coords", coords)
+        if not success:
+            await context.send("Alliance is not registered in the NAP, please register with !addAlliance")
+            return
+        await context.send(f"{tag} Alliance coordinates have been set to {coords}")
+        addAuditLog(f"(Nick: {context.author.display_name} Name: {context.author.name}) set alliance {tag} coordinates to {coords}")
+
+
+    @commands.command(name="setAllianceName", help="Sets the full name of the alliance, usage: !setAllianceCoords <alliance tag> <fullName>")
+    async def setAllianceName(self, context):
+        if not await validateNAPServer(context, "setAllianceName"):
+            return
+        contents = context.message.content.replace("!setAllianceName ", "")
+        contents = contents.split(" ")
+        if len(contents) != 2:
+            await context.send("Incorrect usage of !setAllianceName, usage: !setAllianceMarshal <alliance tag> <name>.\nDoes your alliance have a space in the name? This is unsupported!")
+            return
+        tag = contents[0]
+        name = contents[1]
+        success = setNAPAttribute(tag, "name", name)
+        if not success:
+            await context.send("Alliance is not registered in the NAP, please register with !addAlliance")
+            return
+        await context.send(f"{tag} Alliance name has been set to {name}")
+        addAuditLog(f"(Nick: {context.author.display_name} Name: {context.author.name}) set alliance {tag} name to {name}")
+
+    @commands.command(name="getAllianceDetails", help="Gets all the registered details for the alliance, usage:  !getAllianceDetails <tag>")
+    async def getAllianceDetails(self, context):
+        tag = context.message.content.replace("!getAllianceDetails ", "")
+        details = getNAPAllianceDetails(tag)
+        if details == None:
+            await context.send(f"alliance {tag} has not been registered, please register with !addAlliance")
+            return
+        
+        details_string = tag + " " + details["name"]
+        if "marshal" in details:
+            details_string += "\nMarshal: " + details["marshal"]
+        if "coords" in details:
+            details_string += "\nCoordinates: " + details["coords"]
+        await context.send(details_string)
 
 
     @commands.command(name="getAuditLog", help="Makes the bot send the NAP audit log as a txt file attachment")
