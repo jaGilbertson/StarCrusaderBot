@@ -297,8 +297,14 @@ class NAP(commands.Cog):
     async def getNAPList(self, context):
         allianceList = getNAPAllianceList()
         embedMessage = discord.Embed(title="NAP Alliance List")
-        fullString = ""
+        allianceArray = []
         for tag, alliance in allianceList.items():
+            allianceArray.append(tag)
+        allianceArray.sort()
+
+        fullString = ""
+        for tag in allianceArray:
+            alliance = allianceList[tag]
             fullString += alliance["tag"] + " " + alliance["name"] + "\n"
         embedMessage.add_field(name="NAP Alliance List", value=fullString, inline=True)
         await context.send(embed=embedMessage)
