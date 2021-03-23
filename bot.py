@@ -23,6 +23,7 @@ TOKEN = os.getenv('DISCORD_TOKEN')
 DEBUG_MODE = os.getenv('DEBUG') != None
 DEVELOPER_NAME = os.getenv('DEVELOPER_NAME')
 NAP_SERVER_ID = int(os.getenv("NAP_SERVER_ID"))
+NAP_DEV_OVERRIDE_ID = int(os.getenv("NAP_DEV_OVERRIDE_ID"))
 DEVELOPER_ID = int(os.getenv("DEVELOPER_ID"))
 bot = commands.Bot(command_prefix='!', intents=intents)
 
@@ -281,7 +282,8 @@ class ServerSettings(commands.Cog):
 
 async def validateNAPServer(context, commandName):
     global NAP_SERVER_ID
-    if not context.guild.id == NAP_SERVER_ID:
+    global NAP_DEV_OVERRIDE_ID
+    if not context.guild.id == NAP_SERVER_ID and not context.guild.id == NAP_DEV_OVERRIDE_ID:
         print(f"context id: {context.guild.id}  NAP id: {NAP_SERVER_ID}" )
         await context.channel.send(f"{commandName} can only be used on the NAP Top 50 server so that all other clans can see changes")
         return False
