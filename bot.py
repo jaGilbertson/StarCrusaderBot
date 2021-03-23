@@ -283,14 +283,14 @@ class NAP(commands.Cog):
         embedMessage.add_field(name="NAP Alliance List", value=fullString, inline=True)
         await context.send(embed=embedMessage)
 
-    @commands.command(name="registerAlliance", help="Adds a alliance to the NAP list, usage:  !registerAlliance <alliance tag> <full alliance name>")
+    @commands.command(name="addAlliance", help="Adds a alliance to the NAP list, usage:  !addAlliance <alliance tag> <full alliance name>")
     async def addAlliance(self, context):
-        if not await validateNAPServer(context, "registerAlliance"):
+        if not await validateNAPServer(context, "addAlliance"):
             return
-        tagAndName = context.message.content.replace("!registerAlliance ", "")
+        tagAndName = context.message.content.replace("!addAlliance ", "")
         strings = tagAndName.split(" ")
         if len(strings) != 2:
-            await context.channel.send(f"{tagAndName} is invalid usage of this command, please include the alliance tag and name separated by a single space e.g. !registerAlliance [SCC] SomeCoolClan")
+            await context.channel.send(f"{tagAndName} is invalid usage of this command, please include the alliance tag and name separated by a single space e.g. !addAlliance [SCC] SomeCoolClan")
         tag = strings[0]
         clanName = strings[1]
         
