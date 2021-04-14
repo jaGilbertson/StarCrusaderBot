@@ -33,6 +33,7 @@ serverSettings = None
 
 serverSettingsFileName = r"server_settings.json"
 backupSettingsFileName = r"server_settings_backup.json"
+rulesFileName = r"rules.txt"
 
 
 def refreshSettingsFromFile():
@@ -293,7 +294,14 @@ class NAP(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
-    @commands.command(name="getNAPList", help="prints out all clans in the NAP")
+    @commands.command(name="rules", help="pastes the NAP rules")
+    async def getRules(self, context):
+        with open(rulesFileName, "r") as rulesFile:
+            rulesLines = rulesFile.read()
+            asBytes = str.encode(rulesLines)
+            await context.send("NAP Rules", file=discord.File(BytesIO(asBytes), "NAPRules.txt"))
+
+    @commands.command(name="NAPList", help="prints out all clans in the NAP")
     async def getNAPList(self, context):
         allianceList = getNAPAllianceList()
         embedMessage = discord.Embed(title="NAP Alliance List")
@@ -397,7 +405,7 @@ class NAP(commands.Cog):
         await context.send(f"{tag} Alliance name has been set to {name}")
         addAuditLog(f"(Nick: {context.author.display_name} Name: {context.author.name}) set alliance {tag} name to {name}")
 
-    @commands.command(name="getAllianceDetails", help="Gets all the registered details for the alliance, usage:  !getAllianceDetails <tag>")
+    @commands.command(name="allianceDetails", help="Gets all the registered details for the alliance, usage:  !getAllianceDetails <tag>")
     async def getAllianceDetails(self, context):
         tag = context.message.content.replace("!getAllianceDetails ", "")
         details = getNAPAllianceDetails(tag)
@@ -413,7 +421,7 @@ class NAP(commands.Cog):
         await context.send(details_string)
 
 
-    @commands.command(name="getAuditLog", help="Makes the bot send the NAP audit log as a txt file attachment")
+    @commands.command(name="auditLog", help="Makes the bot send the NAP audit log as a txt file attachment")
     async def getAuditLog(self, context):
         if not await validateNAPServer(context, "getAuditLog"):
             return
