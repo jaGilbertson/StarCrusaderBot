@@ -1,0 +1,29 @@
+Hello and Greetings brother! Welcome to the Server 16 NAP channel
+
+This is the code of conduct, by continuing to use the server, you agree to adhere to the following:
+    - No unsportsmenlike conduct allowed.
+    - No swearing or other offensive language
+    - Show respect for everyone
+    - No witch hunting / Flaming / Trolling
+    - Ask permission before posting links to other discord servers 
+
+Please change your nickname to match your in game name and alliance tag, for example: (ABC) in-game-name
+
+Please review #rules_правила, the general NAP rules with the code of conduct are posted there.
+
+The #general_генеральная and #discussions_обсуждения chat is for everyone to use.
+
+The #complaints_жалобы chat is also for everyone to raise and resolve in-game disputes, please ping other alliances or users when you raise a dispute.
+
+The #important_важный chat can only be used by a @Chapter Leader, this chat is only for important announcements so please keep the chatting and discussions on an absolute minimum.
+
+The channels #events_события, #vote_голосование and #rules_правила are also restricted to only @Chapter Leader. Voting procedure can be found in the description of #vote_голосование.
+
+We use an Auto Translate bot on this server. Use a Flag reaction on any message to translate it into the language of your choice.
+
+IMPORTANT
+We use a Bot to manage the NAP list, the StarCrusader bot. If you are the first of your alliance to join this discord, please register your alliance with the bot using the !addAlliance command.
+You can also install this bot to your alliance's discord server, which you can then use to view the NAP list, the NAP rules, or details about a specific alliance.
+If installed, the bot will also notify your discord server when alliances are added or removed to/from the NAP list!
+StarCrusader bot can be installed using this link: https://discord.com/api/oauth2/authorize?client_id=823623128596742196&permissions=100352&scope=bot
+If your alliance is not on this NAP list, it will not be considered a part of the NAP!

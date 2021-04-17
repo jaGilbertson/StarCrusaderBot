@@ -115,6 +115,7 @@ def getAuditLogLines():
 NAPAlliances = None
 NAPListFileName = r"NAP.json"
 NAPBackupListFileName = r"NAPBackup.json"
+WelcomeMessageFileName = r"welcome_message.txt"
 
 def refreshNAPFromFile():
     global NAPAlliances
@@ -198,11 +199,9 @@ async def sendDevMessage(message):
 async def on_ready():
     print(f'{bot.user} has connected to Discord!')
 
+    print(f'{bot.user} is connected to the following guilds:')
     for guild in bot.guilds:
-        print(
-            f'{bot.user} is connected to the following guild:\n'
-            f'{guild.name}(id: {guild.id})'
-        )
+        print(f'    (id: {guild.id}) name: {guild.name}')
 
 @bot.event
 async def on_command_error(ctx, error):
@@ -211,6 +210,18 @@ async def on_command_error(ctx, error):
     else:
         raise error
 
+@bot.event
+async def on_member_join(member):
+    global NAP_SERVER_ID
+    if member.guild.id == NAP_SERVER_ID:
+        dm_channel = member.dm_channel
+        if dm_channel == None:
+            dm_channel = member.create_dm()
+
+        global WelcomeMessageFileName
+        with open(WelcomeMessageFileName, "r") as welcomeMessageFile:
+            welcomeMessageLines = welcomeMessageFile.read()
+            await dm_channel.send(welcomeMessageLines)
 
 async def announceToGuilds(message):
     global serverSettings
