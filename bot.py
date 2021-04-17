@@ -336,6 +336,7 @@ class NAP(commands.Cog):
         strings = tagAndName.split(" ")
         if len(strings) != 2:
             await context.channel.send(f"{tagAndName} is invalid usage of this command, please include the alliance tag and name separated by a single space e.g. !addAlliance [SCC] SomeCoolClan")
+            return
         tag = strings[0]
         clanName = strings[1]
         
@@ -418,7 +419,7 @@ class NAP(commands.Cog):
 
     @commands.command(name="allianceDetails", help="Gets all the registered details for the alliance, usage:  !getAllianceDetails <tag>")
     async def getAllianceDetails(self, context):
-        tag = context.message.content.replace("!getAllianceDetails ", "")
+        tag = context.message.content.replace("!allianceDetails ", "")
         details = getNAPAllianceDetails(tag)
         if details == None:
             await context.send(f"alliance {tag} has not been registered, please register with !addAlliance")
