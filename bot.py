@@ -319,7 +319,10 @@ class NAP(commands.Cog):
         allianceArray = []
         for tag, alliance in allianceList.items():
             allianceArray.append(tag)
-        allianceArray.sort()
+
+        sortFunc = lambda e : e.lower()
+
+        allianceArray.sort(key=sortFunc)
 
         fullString = ""
         for tag in allianceArray:
@@ -342,7 +345,7 @@ class NAP(commands.Cog):
         
         addNAPAlliance(strings[0], strings[1])
         await context.channel.send(f"{tag} {clanName} has been added to the NAP list! Welcome to the NAP!")
-        await announceToGuilds(f"{tag} {clanName} has just joined the NAP")
+        await announceToGuilds(f"{tag} {clanName} has just joined the NAP - (action by user {context.author.name})")
         
         addAuditLog(f"(Nick: {context.author.display_name} Name: {context.author.name}) added alliance {tag} {clanName} to NAP list")
 
@@ -356,7 +359,7 @@ class NAP(commands.Cog):
             await context.send(f"Alliance with tag {tag} does not exist")
         else:
             name = details["name"]
-            message = f"Alliance {tag} {name} has been removed from the NAP list"
+            message = f"Alliance {tag} {name} has been removed from the NAP list - (action by user {context.author.name}"
             await context.send(message)
             await announceToGuilds(message)
             addAuditLog(f"(Nick: {context.author.display_name} Name: {context.author.name}) removed alliance {tag} {name} from NAP list")
