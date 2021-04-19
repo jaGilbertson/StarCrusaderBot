@@ -216,7 +216,7 @@ async def on_member_join(member):
     if member.guild.id == NAP_SERVER_ID:
         dm_channel = member.dm_channel
         if dm_channel == None:
-            dm_channel = member.create_dm()
+            dm_channel = await member.create_dm()
 
         global WelcomeMessageFileName
         with open(WelcomeMessageFileName, "r") as welcomeMessageFile:
