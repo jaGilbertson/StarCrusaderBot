@@ -312,7 +312,7 @@ class NAP(commands.Cog):
             asBytes = str.encode(rulesLines)
             await context.send("NAP Rules", file=discord.File(BytesIO(asBytes), "NAPRules.txt"))
 
-    @commands.command(name="NAPList", help="prints out all clans in the NAP")
+    @commands.command(name="NAPList", aliases=["nap", "naplist", "NAPlist"], help="prints out all clans in the NAP")
     async def getNAPList(self, context):
         allianceList = getNAPAllianceList()
         embedMessage = discord.Embed(title="NAP Alliance List")
@@ -442,7 +442,6 @@ class NAP(commands.Cog):
             return
         logLines = getAuditLogLines()
         asBytes = str.encode(logLines)
-        #content = b"".join(asBytes)
         await context.send("Audit Log", file=discord.File(BytesIO(asBytes), "auditLog.txt"))
 
 
